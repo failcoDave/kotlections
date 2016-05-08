@@ -40,8 +40,7 @@ fun <K, V> MutableMap<K, V>.uniquePut(key: K, value: V): V {
 }
 
 /** Uses the given [transformer] on each element in this collection to generate an [IntArray] */
-inline fun <T> Collection<T>.mapToIntArray(transformer: (T) -> Int): IntArray {
-    val ret = IntArray(this.size)
-    forEachIndexed { idx, t -> ret[idx] = transformer(t) }
-    return ret
+inline fun <T> Collection<T>.mapToIntArray(transformer: (T) -> Int): IntArray = foldIndexed(IntArray(this.size)) {
+    idx, array, t -> array[idx] = transformer(t)
+    return@foldIndexed array
 }
