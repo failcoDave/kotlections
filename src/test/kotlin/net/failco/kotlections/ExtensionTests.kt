@@ -27,17 +27,13 @@ class ExtensionTests {
     @Test
     fun MutableMap_uniquePut() = sharedUniquePutTests("non-concurrent", HashMap<String, String>())
 
-
     @Test // doesn't test concurrency; impl doesn't affect atomicity, this just makes sure the code path is hit
     fun ConcurrentMap_uniquePut() = sharedUniquePutTests("concurrent", ConcurrentHashMap<String, String>())
 
-
     @Test
     fun mapToIntArray() {
-        // to be passed into method under test: for compactness, just use an Int collection,
-        // though this exact use case probably wouldn't make sense
         val input: Collection<Int> = listOf(2, 8 , -101, 500, 2)
-        //because this particular list happens to be Collection<Int> we can use this convenience method
+        //because this particular list just so happens to be Collection<Int> we can use this convenience method
         val expected = input.toIntArray();
         val actual = input.mapToIntArray { it }
 

@@ -22,7 +22,6 @@ import org.junit.Test
 class FactoryTests {
 
     @Test fun buildEnumMap() {
-        //val expected = TestEnum.values().map { it.name }
         val actual = buildEnumMap(TestEnum::class.java, { it.name })
 
         Assert.assertEquals("unequal size", actual.size, TestEnum.values().size)
