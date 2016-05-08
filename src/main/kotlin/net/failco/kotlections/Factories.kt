@@ -20,16 +20,22 @@ import java.util.*
 
 
 /**
- * Builds a performance-friendly [Map] based on Java's [EnumMap].  Uses the given [initialValue]
- * to generate values for each Enum value.
+ * Builds and populates a performance-friendly [Map] based on Java's [EnumMap],
+ * Uses the given [valueOf] function determine each Enum's mapped value.
  * */
 inline fun <ENUM : kotlin.Enum<ENUM>, VAL>
-        buildEnumMap(clazz: Class<ENUM>, initialValue: (ENUM) -> VAL): Map<ENUM, VAL> {
+        buildEnumMap(clazz: Class<ENUM>, valueOf: (ENUM) -> VAL): Map<ENUM, VAL> = buildMutableEnumMap(clazz, valueOf)
+
+/**
+ * Builds and populates a performance-friendly [MutableMap] based on Java's [EnumMap],
+ * Uses the given [initialValueOf] function determine each Enum's initial mapped value.
+ * */
+inline fun <ENUM : kotlin.Enum<ENUM>, VAL>
+        buildMutableEnumMap(clazz: Class<ENUM>, initialValueOf: (ENUM) -> VAL): MutableMap<ENUM, VAL> {
 
     // build an empty enumMap, iterate each enum constant and pass the map along to the next folder.
     return clazz.enumConstants.fold(EnumMap<ENUM, VAL>(clazz)) {
-        theMap, theEnum ->
-        theMap[theEnum] = initialValue(theEnum)
-        return@fold theMap
+        map, key -> map[key] = initialValueOf(key)
+        return@fold map
     }
 }

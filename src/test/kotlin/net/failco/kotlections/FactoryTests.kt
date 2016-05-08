@@ -20,15 +20,18 @@ import org.junit.Assert
 import org.junit.Test
 
 class FactoryTests {
+    private enum class TestEnum { ONE, TWO, THREE, FOUR, FIVE }
 
-    @Test fun buildEnumMap() {
-        val actual = buildEnumMap(TestEnum::class.java, { it.name })
+    @Test fun buildEnumMap()        =   sharedMapTests(buildEnumMap(TestEnum::class.java, { it.name }))
 
+    @Test fun buildMutableEnumMap() =   sharedMapTests(buildMutableEnumMap(TestEnum::class.java, { it.name }))
+
+    /** makes sure each of [TestEnum] has a value equal to it's [TestEnum.name], per our arbitrary test initializer */
+    private fun sharedMapTests(actual: Map<TestEnum, String>) {
         Assert.assertEquals("unequal size", actual.size, TestEnum.values().size)
         TestEnum.values().forEach { expectedKey ->
             Assert.assertEquals("unexpected value", expectedKey.name, actual[expectedKey])
         }
     }
-    private enum class TestEnum { ONE, TWO, THREE, FOUR, FIVE }
 }
 
